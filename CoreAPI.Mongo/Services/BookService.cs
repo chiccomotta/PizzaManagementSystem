@@ -1,11 +1,9 @@
 ﻿using CoreAPI.Mongo.Configuration;
 using CoreAPI.Mongo.Entity;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace CoreAPI.Mongo.Services
 {
     public class BookService: IBookService
