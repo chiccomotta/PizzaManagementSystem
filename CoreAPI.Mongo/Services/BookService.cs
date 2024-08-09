@@ -24,7 +24,7 @@ namespace CoreAPI.Mongo.Services
         }
         public async Task<Books> GetByIdAsync(string id)
         {
-            return await _book.Find<Books>(c => c.id == id).FirstOrDefaultAsync();
+            return await _book.Find(c => c.id == id).FirstOrDefaultAsync();
         }
         public async Task<Books> CreateAsync(Books book)
         {

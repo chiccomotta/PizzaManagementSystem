@@ -25,7 +25,7 @@ public class UserService: IUserService
     }
     public async Task<User> GetByIdAsync(string id)
     {
-        return await _user.Find<User>(c => c.Id == id).FirstOrDefaultAsync();
+        return await _user.Find(c => c.Id == id).FirstOrDefaultAsync();
     }
     public async Task<User> CreateAsync(User book)
     {
