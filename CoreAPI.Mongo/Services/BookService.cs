@@ -10,8 +10,8 @@ namespace CoreAPI.Mongo.Services
     public class BookService: IBookService
     {
         private readonly IMongoCollection<Books> _book;
-        private readonly BooksConfiguration _settings;
-        public BookService(IOptions<BooksConfiguration> settings)
+        private readonly MongoConfiguration _settings;
+        public BookService(IOptions<MongoConfiguration> settings)
         {
             _settings = settings.Value;
             var client = new MongoClient(_settings.ConnectionString);
@@ -39,5 +39,11 @@ namespace CoreAPI.Mongo.Services
         {
             await _book.DeleteOneAsync(c => c.id == id);
         }
+        public async Task<int> CreateAllAsync(List<Books> books)
+        {
+            await _book.InsertManyAsync(books);
+            return books.Count;
+        }
+
     }
 }
