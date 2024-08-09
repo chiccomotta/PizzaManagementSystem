@@ -11,6 +11,7 @@ public class UserService: IUserService
 {
     private readonly IMongoCollection<User> _user;
     private readonly MongoConfiguration _settings;
+
     public UserService(IOptions<MongoConfiguration> settings)
     {
         _settings = settings.Value;

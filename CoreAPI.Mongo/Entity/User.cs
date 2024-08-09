@@ -16,4 +16,5 @@ public class User
     public Address Address{ get; set; }
     public int YearsProgramming { get; set; }
     public DateTime BirthDate { get; set; }
+    public DateTime InsertDate { get; set; }
 }
