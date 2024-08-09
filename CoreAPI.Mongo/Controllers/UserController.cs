@@ -74,7 +74,7 @@ namespace CoreAPI.Mongo.Controllers
                 .RuleFor(a => a.Region, f => f.Address.State())
                 .RuleFor(a => a.PostalCode, f => f.Address.ZipCode())
                 .RuleFor(a => a.Country, f => f.Address.Country())
-                .RuleFor(a => a.Phone, f => f.Phone.PhoneNumber());
+                .RuleFor(a => a.Phone, f => f.Phone.PhoneNumber("(###) ###-####"));
 
             // Faker for the User class
             var userFaker = new Faker<User>()
@@ -87,10 +87,10 @@ namespace CoreAPI.Mongo.Controllers
                 .RuleFor(u => u.BirthDate, f => f.Date.Past(40, DateTime.Now.AddYears(-18)));   // Generate a birth date between 18 and 58 years ago
 
             // Generate a list of 10 fake users
-            List<User> list = userFaker.Generate(10);
+            List<User> list = userFaker.Generate(1);
 
             await userService.CreateAllAsync(list);
-            return Ok(list);
+            return Ok("OK, users created!");
         }
     }
 }
