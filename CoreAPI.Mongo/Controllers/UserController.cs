@@ -29,6 +29,17 @@ namespace CoreAPI.Mongo.Controllers
             return Ok(book);
         }
 
+        [HttpGet("{firstname}")]
+        public async Task<IActionResult> SearchByName(string firstname)
+        {
+            var user = await userService.SearchByName(firstname);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(User user)
         {
@@ -63,6 +74,7 @@ namespace CoreAPI.Mongo.Controllers
             await userService.DeleteAsync(user.Id);
             return NoContent();
         }
+
 
         [HttpGet]
         [Route("CreateRandomUsers")]
