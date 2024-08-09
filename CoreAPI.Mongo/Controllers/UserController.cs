@@ -90,20 +90,20 @@ namespace CoreAPI.Mongo.Controllers
 
             // Faker for the User class
             var userFaker = new Faker<User>()
-                .RuleFor(u => u.Id, f => f.Random.Guid().ToString("N")[..24]) // Generate a fake GUID as a string
+                .RuleFor(u => u.Id, f => f.Random.Guid().ToString("N")[..24])           // Generate a fake GUID as a string
                 .RuleFor(u => u.FirstName, f => f.Name.FirstName())
                 .RuleFor(u => u.LastName, f => f.Name.LastName())
-                .RuleFor(u => u.Languages, f => f.Make(3, () => f.Random.Word())) // Generate a list of 3 random words as languages
-                .RuleFor(u => u.Address, f => addressFaker.Generate()) // Use the address faker to generate an address
-                .RuleFor(u => u.YearsProgramming, f => f.Random.Int(1, 30)) // Generate a random number between 1 and 30
-                .RuleFor(u => u.BirthDate, f => f.Date.Past(40, DateTime.Now.AddYears(-18))) // Generate a birth date between 18 and 58 years ago
+                .RuleFor(u => u.Languages, f => f.Make(3, () => f.Random.Word()))       // Generate a list of 3 random words as languages
+                .RuleFor(u => u.Address, f => addressFaker.Generate())                  // Use the address faker to generate an address
+                .RuleFor(u => u.YearsProgramming, f => f.Random.Int(1, 20))             // Generate a random number between 1 and 30
+                .RuleFor(u => u.BirthDate, f => f.Date.Past(40, DateTime.Now.AddYears(-18)))    // Generate a birth date between 18 and 58 years ago
                 .RuleFor(u => u.InsertDate, f => f.Date.Recent().ToUniversalTime());
 
             // Generate a list of 10 fake users
             List<User> list = userFaker.Generate(100);
 
             await userService.CreateAllAsync(list);
-            return Ok("OK, users created!");
+            return Ok($"OK, {list.Count} users created!");
         }
     }
 }
