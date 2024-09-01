@@ -73,25 +73,22 @@ namespace CoreAPI.Mongo.Controllers
         [Route("CreateRandomBooks")]
         public async Task<ActionResult> CreateRandomBooks()
         {
+            var numberOfBooks = 100;
+
             // Set up the Bogus Faker for the Books class
             var bookFaker = new Faker<Books>()
                 .RuleFor(b => b.id, f => f.Random.Guid().ToString("N")[..24])        // Generate a fake GUID as a string
-                .RuleFor(b => b.name, f => f.Lorem.Sentence(3))                      // Generate a book name
+                .RuleFor(b => b.name, f => f.Commerce.ProductAdjective() + " " + f.Commerce.ProductName())                      // Generate a book name
                 .RuleFor(b => b.price, f => f.Random.Int(10, 100))                   // Generate a random price between 10 and 100
                 .RuleFor(b => b.category, f => f.Commerce.Categories(1)[0])          // Generate a random category
                 .RuleFor(b => b.author, f => f.Name.FullName());                     // Generate a full name for the author
 
             // Generate 1000 instances of Books
-            List<Books> booksList = bookFaker.Generate(1000);
-
-            //foreach (var book in booksList)
-            //{
-            //    await _bookService.CreateAsync(book);
-            //}
+            var booksList = bookFaker.Generate(numberOfBooks);
 
             await _bookService.CreateAllAsync(booksList);
 
-            return Ok("Books created!");
+            return Ok($"{numberOfBooks} books created!");
         }
     }
 }
