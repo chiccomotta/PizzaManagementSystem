@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PizzaManagementSystem.Models\PizzaManagementSystem.Models.csproj" />
     <ProjectReference Include="..\PizzaManagementSystem.Services\PizzaManagementSystem.Services.csproj" />
   </ItemGroup>
 
