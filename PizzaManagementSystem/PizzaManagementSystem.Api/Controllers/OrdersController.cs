@@ -4,6 +4,8 @@ using PizzaManagementSystem.Models;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using PizzaManagementSystem.Services.Commands.GetMenu;
+using PizzaManagementSystem.Services.Commands.GetNextOrder;
+
 // ReSharper disable InconsistentNaming
 
 namespace PizzaManagementSystem.Api.Controllers;
@@ -67,7 +69,7 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator) 
     [Route("GetNextOrder")]
     public async Task<ActionResult<Order>> GetNextOrder()
     {
-        var order = orderService.GetNextOrder();
+        var order = await mediator.Send(new GetNextOrderCommand());
         if (order is not null)
         {
             return Ok(order);

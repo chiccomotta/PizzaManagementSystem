@@ -6,6 +6,6 @@ public interface IOrderService
 {
     Task QueueOrder(Order order);
     int GetPendingOrders();
-    Order GetNextOrder();
+    Task<Order?> GetNextOrder();
     List<Pizza> MenuPizza { get;}
 }

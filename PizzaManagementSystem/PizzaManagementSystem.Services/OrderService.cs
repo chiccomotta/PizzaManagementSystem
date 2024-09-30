@@ -21,14 +21,10 @@ public class OrderService : IOrderService
         return Orders.Count;
     }
 
-    public Order GetNextOrder()
+    public Task<Order?> GetNextOrder()
     {
-        if(Orders.TryDequeue(out var nextOrder))
-        {
-            return nextOrder;
-        }
-
-        return null;
+        var order = Orders.TryDequeue(out var nextOrder) ? nextOrder : null;
+        return Task.FromResult(order);
     }
 
     public List<Pizza> MenuPizza =>
