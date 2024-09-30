@@ -1,1 +1,1 @@
-# MyProjects
+# CQRS Web API Example
