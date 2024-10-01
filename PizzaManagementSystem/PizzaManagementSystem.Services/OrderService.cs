@@ -5,8 +5,7 @@ namespace PizzaManagementSystem.Services;
 
 public class OrderService : IOrderService
 {
-    public static ConcurrentQueue<Order> Orders = new ConcurrentQueue<Order>();
-
+    public static ConcurrentQueue<Order> Orders = new();
    
     public async Task QueueOrder(Order order)
     {
