@@ -5,7 +5,7 @@ using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using PizzaManagementSystem.Services.Commands.GetMenu;
 using PizzaManagementSystem.Services.Commands.GetNextOrder;
-
+// ReSharper disable All
 // ReSharper disable InconsistentNaming
 
 namespace PizzaManagementSystem.Api.Controllers;
@@ -34,12 +34,6 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator) 
         if (request.Items.Count == 0)
         {
             return BadRequest("Selezionare almeno una pizza dal menu");
-        }
-
-        // Id delle pizze
-        if (!request.Items.All(id => id is >= 1 and <= 4))
-        {
-            return BadRequest("L'Id della pizza deve essere >= 1 e <= 4");
         }
 
         // Leggo i pending orders
