@@ -22,6 +22,8 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator) 
     [Route("Menu")]
     public async Task<ActionResult<List<Pizza>>> Menu()
     {
+        var i = 0;
+        var k = 34 / i;
         var menu = await mediator.Send(new GetMenuCommand());
         return Ok(menu);
     }
