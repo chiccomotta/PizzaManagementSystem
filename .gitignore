@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/slnx.sqlite
+/PizzaManagementSystem/PizzaManagementSystem.Api/OrdersQueue/data.0
+/PizzaManagementSystem/PizzaManagementSystem.Api/OrdersQueue/lock
+/PizzaManagementSystem/PizzaManagementSystem.Api/OrdersQueue/meta.state
