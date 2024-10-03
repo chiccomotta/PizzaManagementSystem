@@ -1,29 +1,32 @@
-﻿using PizzaManagementSystem.Models;
-using System.Collections.Concurrent;
-// ReSharper disable StringLiteralTypo
+﻿using DiskQueue;
+using PizzaManagementSystem.Models;
 
 namespace PizzaManagementSystem.Services;
 
-public class OrderService : IOrderService
+public  class OrderPersistentQueueService : IOrderService
 {
-    public static ConcurrentQueue<Order> Orders = new();
-   
+    private IPersistentQueue<Order> Orders = new PersistentQueue<Order>("OrdersQueue");
+
     public async Task QueueOrder(Order order)
     {
         await Task.Run(() =>
         {
-            Orders.Enqueue(order);
+            using var session = Orders.OpenSession();
+            session.Enqueue(order);
+            session.Flush();
         });
     }
 
     public int GetPendingOrders()
     {
-        return Orders.Count;
+        return Orders.EstimatedCountOfItemsInQueue;
     }
 
     public Task<Order?> GetNextOrder()
     {
-        var order = Orders.TryDequeue(out var nextOrder) ? nextOrder : null;
+        using var session = Orders.OpenSession();
+        var order = session.Dequeue();
+        session.Flush();
         return Task.FromResult(order);
     }
 

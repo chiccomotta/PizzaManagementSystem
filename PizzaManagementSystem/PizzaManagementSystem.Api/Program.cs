@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IOrderService>(new OrderService());
+builder.Services.AddSingleton<IOrderService>(new OrderPersistentQueueService());
 builder.Services.AddScoped<GlobalExceptionMiddleware>();
 
 // FluentValidation
