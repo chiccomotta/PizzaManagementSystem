@@ -1,9 +1,10 @@
 ﻿using DiskQueue;
+using Microsoft.Extensions.Logging;
 using PizzaManagementSystem.Models;
 
 namespace PizzaManagementSystem.Services;
 
-public  class OrderPersistentQueueService : IOrderService
+public class OrderPersistentQueueService(ILogger<OrderPersistentQueueService> logger) : IOrderService
 {
     private IPersistentQueue<Order> Orders = new PersistentQueue<Order>("OrdersQueue");
 
@@ -14,6 +15,8 @@ public  class OrderPersistentQueueService : IOrderService
             using var session = Orders.OpenSession();
             session.Enqueue(order);
             session.Flush();
+
+            logger.LogInformation($"Added order id {order.Id} to Queue. Total price is {order.TotalPrice:C}");
         });
     }
 
