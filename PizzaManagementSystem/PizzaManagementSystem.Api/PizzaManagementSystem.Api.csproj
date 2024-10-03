@@ -14,4 +14,8 @@
     <ProjectReference Include="..\PizzaManagementSystem.Services\PizzaManagementSystem.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="OrdersQueue\" />
+  </ItemGroup>
+
 </Project>
