@@ -14,11 +14,11 @@ namespace PizzaManagementSystem.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class OrdersController(IOrderService _orderService, IMediator _mediator) : ControllerBase
+public class OrdersController(IOrderService _orderService, IMediator _mediator, DBContext context) : ControllerBase
 {
-    public readonly IOrderService orderService = _orderService;
-    public readonly IMediator mediator = _mediator;
-
+    private readonly IOrderService orderService = _orderService;
+    private readonly IMediator mediator = _mediator;
+    private readonly DBContext context = context;
 
     [HttpGet]
     [Route("Menu")]
@@ -75,10 +75,13 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator) 
     }
 
     [HttpGet]
-    [Route("GetArea")]
-    public async Task<ActionResult> GetArea([FromServices] DBContext context)
+    [Route("area/{id:int}")]
+    public async Task<ActionResult> GetArea(int id)
     {
-        var area = await context.Areas.ToListAsync();
+        var area = await context.Areas
+            .Where(a => a.AreaId == id)
+            .FirstOrDefaultAsync();
+
         if (area is not null)
         {
             return Ok(area);
