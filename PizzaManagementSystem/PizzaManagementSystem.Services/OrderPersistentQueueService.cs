@@ -7,7 +7,7 @@ namespace PizzaManagementSystem.Services;
 
 public class OrderPersistentQueueService(ILogger<OrderPersistentQueueService> logger) : IOrderService
 {
-    private readonly IPersistentQueue<Order> _orders = new PersistentQueue<Order>("OrdersQueue");
+    private readonly IPersistentQueue<Order> _orders = new PersistentQueue<Order>("OrdersQueue", 1 * 1024 * 1024);  // 1 MB
 
     public async Task QueueOrder(Order order)
     {

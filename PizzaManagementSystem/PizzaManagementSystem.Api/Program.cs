@@ -1,18 +1,22 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using PizzaManagementSystem.Api.Middlewares;
+using PizzaManagementSystem.Models.Extensions;
 using PizzaManagementSystem.Models.Validators;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
+// ReSharper disable StringLiteralTypo
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var configuration = builder.Configuration;
 
+// Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 builder.Services.AddSingleton<IOrderService, OrderPersistentQueueService>();
 builder.Services.AddScoped<GlobalExceptionMiddleware>();
@@ -23,6 +27,8 @@ builder.Services.AddValidatorsFromAssembly(typeof(OrderDtoValidator).Assembly).A
 // MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(CreateOrderCommand).Assembly));
 
+// EFCore
+builder.Services.AddDBPizzeContext(configuration);
 var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionMiddleware>();

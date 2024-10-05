@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzaManagementSystem.Models;
+using PizzaManagementSystem.Models.Models;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using PizzaManagementSystem.Services.Commands.GetMenu;
@@ -70,5 +72,18 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator) 
         }
 
         return Ok("Nessun ordine da processare");
+    }
+
+    [HttpGet]
+    [Route("GetArea")]
+    public async Task<ActionResult> GetArea([FromServices] DBContext context)
+    {
+        var area = await context.Areas.ToListAsync();
+        if (area is not null)
+        {
+            return Ok(area);
+        }
+
+        return NotFound();
     }
 }
