@@ -75,18 +75,23 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator, 
     }
 
     [HttpGet]
-    [Route("area/{id:int}")]
-    public async Task<ActionResult> GetArea(int id)
+    [Route("area/{id:int?}")]
+    public async Task<ActionResult> GetArea(int? id)
     {
-        var area = await context.Areas
-            .Where(a => a.AreaId == id)
-            .FirstOrDefaultAsync();
-
-        if (area is not null)
+        if (id.HasValue)
         {
-            return Ok(area);
-        }
+            var area = await context.Areas.Where(a => a.AreaId == id).FirstOrDefaultAsync();
 
-        return NotFound();
+            if (area is not null)
+            {
+                return Ok(area);
+            }
+
+            return NotFound();
+        }
+        else
+        {
+            return  Ok(await context.Areas.ToListAsync());
+        }
     }
 }
