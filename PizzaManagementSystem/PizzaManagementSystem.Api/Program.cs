@@ -5,6 +5,7 @@ using PizzaManagementSystem.Models.Extensions;
 using PizzaManagementSystem.Models.Validators;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
+using System.Text.Json.Serialization;
 // ReSharper disable StringLiteralTypo
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+{
+    // Not Exclude null properties during serialization
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,7 +35,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(OrderDtoValidator).Assembly).A
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(CreateOrderCommand).Assembly));
 
 // EFCore
-builder.Services.AddDBPizzeContext(configuration);
+builder.Services.AddDbPizzeContext(configuration);
 var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionMiddleware>();

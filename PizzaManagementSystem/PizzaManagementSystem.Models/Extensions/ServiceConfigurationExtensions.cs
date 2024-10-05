@@ -7,9 +7,8 @@ namespace PizzaManagementSystem.Models.Extensions;
 
 public static class ServiceConfigurationExtensions
 {
-    public static void AddDBPizzeContext(this IServiceCollection services, IConfiguration configuration)
+    public static void AddDbPizzeContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DBPizze");
-        services.AddDbContext<DBContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<DBContext>(options => options.UseSqlServer(configuration.GetConnectionString("DBPizze")));
     }
 }

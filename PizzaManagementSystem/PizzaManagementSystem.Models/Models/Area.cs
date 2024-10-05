@@ -20,4 +20,6 @@ public partial class Area
     public string? ModifiedBy { get; set; }
 
     public bool Enabled { get; set; }
+
+    public int? Codice { get; set; }
 }

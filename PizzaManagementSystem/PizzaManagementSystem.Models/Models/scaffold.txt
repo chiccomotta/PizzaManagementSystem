@@ -1,0 +1,2 @@
+﻿
+Scaffold-DbContext "Server=localhost;Database=DBPizze;User Id=sa;Password=chicco;MultipleActiveResultSets=True;TrustServerCertificate=True;Encrypt=False;" Microsoft.EntityFrameworkCore.SqlServer  -Force -OutputDir Models -Context DBContext -UseDatabaseNames -Tables Area
