@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace PizzaManagementSystem.Models.Models;
 
@@ -14,6 +16,8 @@ public partial class DBContext : DbContext
     }
 
     public virtual DbSet<Area> Areas { get; set; }
+
+    public virtual DbSet<Impiegato> Impiegatos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -40,6 +44,21 @@ public partial class DBContext : DbContext
             entity.Property(e => e.ModifiedBy).HasMaxLength(50);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(60);
+        });
+
+        modelBuilder.Entity<Impiegato>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Impiegat__3214EC070141A63D");
+
+            entity.ToTable("Impiegato");
+
+            entity.Property(e => e.Firstname).HasMaxLength(80);
+            entity.Property(e => e.Surname).HasMaxLength(80);
+
+            entity.HasOne(d => d.Area).WithMany(p => p.Impiegatos)
+                .HasForeignKey(d => d.AreaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Impiegato__AreaI__398D8EEE");
         });
 
         OnModelCreatingPartial(modelBuilder);

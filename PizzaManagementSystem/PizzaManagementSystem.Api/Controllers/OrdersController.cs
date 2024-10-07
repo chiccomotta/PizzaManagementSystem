@@ -1,3 +1,4 @@
+using Bogus;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,9 @@ using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using PizzaManagementSystem.Services.Commands.GetMenu;
 using PizzaManagementSystem.Services.Commands.GetNextOrder;
+using Area = PizzaManagementSystem.Models.Models.Area;
+using DBContext = PizzaManagementSystem.Models.Models.DBContext;
+
 // ReSharper disable All
 // ReSharper disable InconsistentNaming
 
@@ -93,5 +97,38 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator, 
         {
             return  Ok(await context.Areas.ToListAsync());
         }
+    }
+
+    [HttpGet]
+    [Route("Feed")]
+    public async Task<ActionResult> FeedDb()
+    {
+        var faker = new Faker<Area>()
+            .RuleFor(t => t.Description, f => f.Commerce.ProductDescription())
+            .RuleFor(t => t.Codice, f => f.Random.Int(1, 700))
+            .RuleFor(t => t.Name, f => f.Commerce.ProductName())
+            .RuleFor(t => t.InsertDate, f => f.Date.Past())
+            .RuleFor(t => t.InsertBy, f => f.Name.FullName())
+            .RuleFor(t => t.ModifiedDate, f => f.Date.Past())
+            .RuleFor(t => t.ModifiedBy, f => f.Name.FullName())
+            .RuleFor(t => t.Enabled, f => f.Random.Bool());
+
+        var areas = faker.Generate(10);
+
+        var employees = new Faker<Impiegato>()
+            .RuleFor(t => t.Firstname, f => f.Name.FirstName())
+            .RuleFor(t => t.Surname, f => f.Name.LastName())
+            .RuleFor(t => t.AreaId, f => f.Random.Int(1, 10))
+            .RuleFor(t => t.Enabled, f => f.Random.Bool());
+
+        var emps = employees.Generate(100);
+
+        await context.Database.ExecuteSqlRawAsync("truncate table Impiegato; delete area; DBCC CHECKIDENT ('Area', RESEED, 0);");
+
+        await context.Areas.AddRangeAsync(areas);
+        await context.Impiegatos.AddRangeAsync(emps);
+
+        await context.SaveChangesAsync();
+        return Ok("DB populated");
     }
 }

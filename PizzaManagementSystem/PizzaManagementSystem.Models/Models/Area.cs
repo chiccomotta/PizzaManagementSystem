@@ -22,4 +22,6 @@ public partial class Area
     public bool Enabled { get; set; }
 
     public int? Codice { get; set; }
+
+    public virtual ICollection<Impiegato> Impiegatos { get; set; } = new List<Impiegato>();
 }
