@@ -100,7 +100,7 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator, 
     }
 
     [HttpGet]
-    [Route("Feed")]
+    [Route("/area/Feed")]
     public async Task<ActionResult> FeedDb()
     {
         var faker = new Faker<Area>()
@@ -130,5 +130,36 @@ public class OrdersController(IOrderService _orderService, IMediator _mediator, 
 
         await context.SaveChangesAsync();
         return Ok("DB populated");
+    }
+
+    [HttpGet()]
+    [Route("/area/insert")]
+    public async Task<ActionResult> TestInsert()
+    {
+        var area = new Area()
+        {
+            Name = "TestArea",
+            Description = "Area description for test",
+            Codice = 999,
+            Enabled = true,
+            Impiegatos = new List<Impiegato>()
+            {
+                new Impiegato()
+                {
+                    Firstname = "Gino",
+                    Surname = "Landi",
+                },
+                new Impiegato()
+                {
+                    Firstname = "Pasquale",
+                    Surname = "Fuzzi",
+                },
+            }
+        };
+
+        context.Areas.Add(area);
+        await context.SaveChangesAsync();
+
+        return Ok("OK Inserted");
     }
 }
