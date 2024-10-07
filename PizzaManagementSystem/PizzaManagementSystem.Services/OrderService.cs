@@ -7,13 +7,11 @@ namespace PizzaManagementSystem.Services;
 public class OrderService : IOrderService
 {
     public static ConcurrentQueue<Order> Orders = new();
-   
-    public async Task QueueOrder(Order order)
+
+    public Task QueueOrder(Order order)
     {
-        await Task.Run(() =>
-        {
-            Orders.Enqueue(order);
-        });
+        Orders.Enqueue(order);
+        return Task.CompletedTask;
     }
 
     public int GetPendingOrders()

@@ -24,6 +24,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Business services
 builder.Services.AddSingleton<IOrderService, OrderPersistentQueueService>();
 builder.Services.AddScoped<GlobalExceptionMiddleware>();
 
@@ -33,7 +34,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(OrderDtoValidator).Assembly).A
 // MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(CreateOrderCommand).Assembly));
 
-// EFCore
+// EF Core
 builder.Services.AddDbPizzeContext(configuration);
 var app = builder.Build();
 

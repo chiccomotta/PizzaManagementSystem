@@ -10,16 +10,14 @@ public class OrderPersistentQueueService(ILogger<OrderPersistentQueueService> lo
 {
     private readonly IPersistentQueue<Order> _orders = new PersistentQueue<Order>("OrdersQueue", 1 * 1024 * 1024);  // 1 MB
 
-    public async Task QueueOrder(Order order)
+    public Task QueueOrder(Order order)
     {
-        await Task.Run(() =>
-        {
-            using var session = _orders.OpenSession();
-            session.Enqueue(order);
-            session.Flush();
+        using var session = _orders.OpenSession();
+        session.Enqueue(order);
+        session.Flush();
 
-            logger.LogInformation($"Added order id {order.Id} to Queue. Total order price is {order.TotalPrice:C}");
-        });
+        logger.LogInformation($"Added order id {order.Id} to Queue. Total order price is {order.TotalPrice:C}");
+        return Task.CompletedTask;
     }
 
     public int GetPendingOrders()
