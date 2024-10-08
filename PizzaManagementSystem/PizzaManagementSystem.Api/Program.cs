@@ -1,14 +1,13 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 using PizzaManagementSystem.Api.Middlewares;
 using PizzaManagementSystem.Models.Extensions;
+using PizzaManagementSystem.Models.Models;
 using PizzaManagementSystem.Models.Validators;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using System.Text.Json.Serialization;
-using Microsoft.OpenApi.Interfaces;
-using Microsoft.OpenApi.Models;
-using PizzaManagementSystem.Models.Models;
 
 // ReSharper disable StringLiteralTypo
 
@@ -50,8 +49,6 @@ builder.Services.AddSwaggerGen(cfg =>
     });
 });
 
-
-
 // Business services
 builder.Services.AddSingleton<IOrderService, OrderPersistentQueueService>();
 builder.Services.AddScoped<GlobalExceptionMiddleware>();
@@ -66,7 +63,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Cre
 builder.Services.AddDbPizzeContext(configuration);
 
 // ASP Identity configuration endpoints
-builder.Services.AddIdentityApiEndpoints<User>()
+builder.Services
+    .AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<DBContext>();
 
 var app = builder.Build();
