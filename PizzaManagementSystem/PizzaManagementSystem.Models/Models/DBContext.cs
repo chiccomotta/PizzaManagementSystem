@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace PizzaManagementSystem.Models.Models;
 
-public partial class DBContext : DbContext
+public partial class DBContext : IdentityDbContext<User>
 {
     public DBContext()
     {
@@ -30,6 +31,8 @@ public partial class DBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder); // for ASP Identity
+
         modelBuilder.Entity<Area>(entity =>
         {
             entity.HasKey(e => e.AreaId).HasName("PK__Area__70B820484C59AD6F");

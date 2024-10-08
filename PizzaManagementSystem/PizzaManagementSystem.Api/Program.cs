@@ -6,6 +6,8 @@ using PizzaManagementSystem.Models.Validators;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using System.Text.Json.Serialization;
+using PizzaManagementSystem.Models.Models;
+
 // ReSharper disable StringLiteralTypo
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +38,11 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Cre
 
 // EF Core
 builder.Services.AddDbPizzeContext(configuration);
+
+// ASP Identity configuration endpoints
+builder.Services.AddIdentityApiEndpoints<User>()
+    .AddEntityFrameworkStores<DBContext>();
+
 var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
@@ -48,6 +55,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapIdentityApi<User>();
 
 app.UseAuthorization();
 
