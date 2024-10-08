@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PizzaManagementSystem.Models.Models;
 
@@ -57,7 +55,7 @@ public partial class DBContext : DbContext
 
             entity.HasOne(d => d.Area).WithMany(p => p.Impiegatos)
                 .HasForeignKey(d => d.AreaId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Impiegato__AreaI__398D8EEE");
         });
 
