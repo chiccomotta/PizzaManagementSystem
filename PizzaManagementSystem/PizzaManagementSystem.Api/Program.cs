@@ -6,6 +6,8 @@ using PizzaManagementSystem.Models.Validators;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Interfaces;
+using Microsoft.OpenApi.Models;
 using PizzaManagementSystem.Models.Models;
 
 // ReSharper disable StringLiteralTypo
@@ -24,7 +26,31 @@ builder.Services.AddControllers()
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(cfg =>
+{
+    cfg.AddSecurityDefinition("BearerScheme", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
+    });
+
+    cfg.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme()
+            {
+                Reference = new OpenApiReference()
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "BearerScheme"
+                }
+            },
+            []      // no scopes
+        }
+    });
+});
+
+
 
 // Business services
 builder.Services.AddSingleton<IOrderService, OrderPersistentQueueService>();
@@ -56,7 +82,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapIdentityApi<User>();
+app.MapGroup("/auth").MapIdentityApi<User>();
 
 app.UseAuthorization();
 
