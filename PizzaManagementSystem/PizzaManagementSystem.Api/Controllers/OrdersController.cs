@@ -1,5 +1,6 @@
 using Bogus;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaManagementSystem.Models;
@@ -16,6 +17,7 @@ using DBContext = PizzaManagementSystem.Models.Models.DBContext;
 
 namespace PizzaManagementSystem.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class OrdersController(IOrderService _orderService, IMediator _mediator, DBContext context) : ControllerBase
