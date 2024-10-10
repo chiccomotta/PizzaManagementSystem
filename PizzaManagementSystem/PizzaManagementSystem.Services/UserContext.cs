@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using PizzaManagementSystem.Models.Models;
+using System.Security.Claims;
 
 namespace PizzaManagementSystem.Services;
 
@@ -10,7 +10,7 @@ public class UserContext(IHttpContextAccessor httpContextAccessor, ILogger<UserC
 {
     public async Task<CurrentUser> GetCurrentUser()
     {
-        var user = httpContextAccessor?.HttpContext?.User;
+        var user = httpContextAccessor.HttpContext?.User;
         if (user?.Identity is null || !user.Identity.IsAuthenticated)
         {
             throw new InvalidOperationException("Error user is null or not authenticated");
@@ -23,7 +23,6 @@ public class UserContext(IHttpContextAccessor httpContextAccessor, ILogger<UserC
         // Get the current logged-in user
         var dbUser = await userManager.GetUserAsync(user);
 
-        var currentUser = new CurrentUser(userId, email, dbUser?.Nickname, roles);
-        return currentUser;
+        return new CurrentUser(userId, email, dbUser?.Nickname, roles);
     }
 }

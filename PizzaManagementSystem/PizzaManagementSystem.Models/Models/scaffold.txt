@@ -1,2 +1,68 @@
 ﻿
 Scaffold-DbContext "Server=localhost;Database=DBPizze;User Id=sa;Password=chicco;MultipleActiveResultSets=True;TrustServerCertificate=True;Encrypt=False;" Microsoft.EntityFrameworkCore.SqlServer  -Force -OutputDir Models -Context DBContext -UseDatabaseNames -Tables Area,Impiegato
+
+/*
+create database DBPizze
+GO
+
+use Dbpizze
+
+-- Area
+CREATE TABLE [dbo].[Area] 
+(
+	[AreaId] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[Name] [nvarchar](60) NOT NULL,
+	[Description] [nvarchar] (1024) NOT NULL,
+	
+	[InsertDate] [datetime] NULL,
+	[InsertBy] [nvarchar](50) NULL,
+	[ModifiedDate] [datetime] NULL,
+	[ModifiedBy] [nvarchar](50) NULL,
+	[Enabled] [bit] NOT NULL
+)
+
+-- Impiegato
+CREATE TABLE [dbo].[Impiegato] 
+(
+	[Id] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[AreaId] [int] REFERENCES Area(AreaId) NOT NULL,	
+	[Firstname] [nvarchar](80) NOT NULL,
+	[Surname] [nvarchar] (80) NOT NULL,	
+	[Enabled] [bit] NOT NULL
+)
+GO
+
+insert into Area VALUES ('Principale', 'Descrizione', GETDATE(), 'admin', GETDATE(), 'admin', 0)
+insert into Area VALUES ('Informatica', 'Descrizione', GETDATE(), 'admin', GETDATE(), 'admin', 0)
+insert into Area VALUES ('Contabilità', 'Descrizione', GETDATE(), 'admin', GETDATE(), 'admin', 0)
+*/
+
+use dbpizze	
+go
+
+select * from Area
+select * from Impiegato 
+select * from AspNetUsers
+select * from AspNetRoles
+select * from AspNetUserRoles
+
+sp_help AspNetRoles
+
+-- Configurazione dei ruoli
+insert into AspNetRoles VALUES
+(NEWID(), 'Administrator', null, null),
+(NEWID(), 'Owner', null, null),
+(NEWID(), 'User', null, null)
+
+-- IMPORTANTE: VALORIZZARE ANCHE NORMALIZEDNAME CON IL VALORE DELLA COLONNA NAME IN UPPERCASE
+update AspNetRoles set NormalizedName = UPPER(name)
+
+insert into  AspNetUserRoles VALUES
+('5d2e1964-1870-432d-9336-421c2c0f4d56', 'F90D5D2A-1473-4D83-ACA9-4107E82E4DA9' )
+
+
+truncate table Impiegato 
+delete area
+DBCC CHECKIDENT ('Area', RESEED, 0);
+
+update AspNetUsers set Nickname = 'Chicco'

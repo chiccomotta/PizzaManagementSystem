@@ -32,6 +32,7 @@ public class OrdersController(IOrderService orderService, IMediator mediator, DB
         return Ok(menu);
     }
 
+    [AllowAnonymous]
     [HttpPost]
     [Route("AddOrder")]
     public async Task<ActionResult<Order>> AddOrder([FromBody] OrderDto request)
@@ -67,6 +68,7 @@ public class OrdersController(IOrderService orderService, IMediator mediator, DB
 
     [HttpGet]
     [Route("GetNextOrder")]
+    [Authorize(Roles = UserRoles.Admin)]
     public async Task<ActionResult<Order>> GetNextOrder()
     {
         var order = await mediator.Send(new GetNextOrderCommand());

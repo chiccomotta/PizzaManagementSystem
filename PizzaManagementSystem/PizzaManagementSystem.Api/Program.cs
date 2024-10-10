@@ -8,6 +8,7 @@ using PizzaManagementSystem.Models.Validators;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 // ReSharper disable StringLiteralTypo
 
@@ -66,6 +67,7 @@ builder.Services.AddDbPizzeContext(configuration);
 // ASP Identity configuration endpoints
 builder.Services
     .AddIdentityApiEndpoints<User>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DBContext>();
 
 var app = builder.Build();
