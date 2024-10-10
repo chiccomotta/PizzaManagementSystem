@@ -20,16 +20,14 @@ namespace PizzaManagementSystem.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("[controller]")]
-public class OrdersController(IOrderService _orderService, IMediator _mediator, DBContext context) : ControllerBase
+public class OrdersController(IOrderService orderService, IMediator mediator, DBContext context, IUserContext userContext) : ControllerBase
 {
-    private readonly IOrderService orderService = _orderService;
-    private readonly IMediator mediator = _mediator;
-    private readonly DBContext context = context;
-
     [HttpGet]
     [Route("Menu")]
     public async Task<ActionResult<List<Pizza>>> Menu()
     {
+        var user = await userContext.GetCurrentUser();
+
         var menu = await mediator.Send(new GetMenuCommand());
         return Ok(menu);
     }

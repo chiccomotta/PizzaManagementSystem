@@ -52,6 +52,7 @@ builder.Services.AddSwaggerGen(cfg =>
 // Business services
 builder.Services.AddSingleton<IOrderService, OrderPersistentQueueService>();
 builder.Services.AddScoped<GlobalExceptionMiddleware>();
+builder.Services.AddScoped<IUserContext, UserContext>();
 
 // FluentValidation
 builder.Services.AddValidatorsFromAssembly(typeof(OrderDtoValidator).Assembly).AddFluentValidationAutoValidation();
