@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using PizzaManagementSystem.Api.Middlewares;
 using PizzaManagementSystem.Models.Extensions;
@@ -8,7 +9,6 @@ using PizzaManagementSystem.Models.Validators;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Identity;
 
 // ReSharper disable StringLiteralTypo
 
