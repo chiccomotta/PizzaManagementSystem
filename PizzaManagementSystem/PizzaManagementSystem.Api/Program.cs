@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using PizzaManagementSystem.Api.Middlewares;
+using PizzaManagementSystem.Models.Authorization;
 using PizzaManagementSystem.Models.Extensions;
 using PizzaManagementSystem.Models.Models;
 using PizzaManagementSystem.Models.Validators;
@@ -68,6 +69,7 @@ builder.Services.AddDbPizzeContext(configuration);
 builder.Services
     .AddIdentityApiEndpoints<User>()
     .AddRoles<IdentityRole>()
+    .AddClaimsPrincipalFactory<ClaimsPrincipalFactory>()    // Utilizzo la mia classe Factory per aggiungere i claims che voglio
     .AddEntityFrameworkStores<DBContext>();
 
 var app = builder.Build();
