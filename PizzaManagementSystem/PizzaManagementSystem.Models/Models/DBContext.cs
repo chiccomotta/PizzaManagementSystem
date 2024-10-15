@@ -5,10 +5,6 @@ namespace PizzaManagementSystem.Models.Models;
 
 public partial class DBContext : IdentityDbContext<User>
 {
-    public DBContext()
-    {
-    }
-
     public DBContext(DbContextOptions<DBContext> options)
         : base(options)
     {
