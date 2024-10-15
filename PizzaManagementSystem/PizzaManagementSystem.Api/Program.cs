@@ -72,6 +72,12 @@ builder.Services
     .AddClaimsPrincipalFactory<ClaimsPrincipalFactory>()    // Utilizzo la mia classe Factory per aggiungere i claims che voglio
     .AddEntityFrameworkStores<DBContext>();
 
+// Autorizzazione basata su uno specifico claim (Nickname in questo caso).
+// La policy HasNickname deve trovare nel token dell'utente un claim "Nickname" il cui valore sia "Chicco" altrimenti forbidden.
+builder.Services
+    .AddAuthorizationBuilder()
+    .AddPolicy(Policies.HasNickname, b => b.RequireClaim(ClaimNames.Nickname, "Chicco"));
+
 var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionMiddleware>();

@@ -18,7 +18,7 @@ public class ClaimsPrincipalFactory(
         // Aggiungo il Claim 'Nickname'
         if (!string.IsNullOrWhiteSpace(user.Nickname))
         {
-            identity.AddClaim(new Claim("Nickname", user.Nickname));
+            identity.AddClaim(new Claim(ClaimNames.Nickname, user.Nickname));
         }
 
         // Aggiungere altri claims se necessario
