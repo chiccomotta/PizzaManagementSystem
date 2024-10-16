@@ -11,7 +11,7 @@ public class EmailAuthorizationHandler(IUserContext userContext, ILogger<EmailAu
         var currentUser = await userContext.GetCurrentUser();
         logger.LogInformation("currentUser: {user}", currentUser);
 
-        if (currentUser.Email.Contains(requirement.Domain))
+        if (currentUser.Email.Contains(requirement.Domain, StringComparison.InvariantCultureIgnoreCase))
         {
             context.Succeed(requirement);
             return;

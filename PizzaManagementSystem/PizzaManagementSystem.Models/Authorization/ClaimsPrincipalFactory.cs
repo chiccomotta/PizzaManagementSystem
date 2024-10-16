@@ -21,7 +21,11 @@ public class ClaimsPrincipalFactory(
             identity.AddClaim(new Claim(ClaimNames.Nickname, user.Nickname));
         }
 
-        // Aggiungere altri claims se necessario
+        // Aggiungo il Claim 'ProgrammingLanguages'
+        if (!string.IsNullOrWhiteSpace(user.ProgrammingLanguages))
+        {
+            identity.AddClaim(new Claim(ClaimNames.ProgrammingLanguages, user.ProgrammingLanguages));
+        }
 
         return new ClaimsPrincipal(identity);
     }

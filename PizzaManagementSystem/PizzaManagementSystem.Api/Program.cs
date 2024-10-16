@@ -83,9 +83,8 @@ builder.Services
     // La policy HasNickname deve trovare nel token dell'utente un claim "Nickname" il cui valore sia "Chicco" altrimenti forbidden.
     .AddPolicy(Policies.HasNickname, b => b.RequireClaim(ClaimNames.Nickname, "Chicco"))
     
-    // 
+    // Custom policy handler
     .AddPolicy(Policies.HasHotmailDomain, b => b.AddRequirements(new EmailRequirement("@hotmail.it")));
-        
 
 var app = builder.Build();
 
