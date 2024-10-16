@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaManagementSystem.Models;
 using PizzaManagementSystem.Models.Authorization;
+using PizzaManagementSystem.Models.Interfaces;
 using PizzaManagementSystem.Models.Models;
-using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using PizzaManagementSystem.Services.Commands.GetMenu;
 using PizzaManagementSystem.Services.Commands.GetNextOrder;
+using PizzaManagementSystem.Services.Interfaces;
 using Area = PizzaManagementSystem.Models.Models.Area;
 using DBContext = PizzaManagementSystem.Models.Models.DBContext;
 
@@ -69,7 +70,9 @@ public class OrdersController(IOrderService orderService, IMediator mediator, DB
 
     [HttpGet]
     [Route("GetNextOrder")]
-    [Authorize(Roles = UserRoles.Admin, Policy = Policies.HasNickname)]
+    [Authorize(Roles = UserRoles.Admin)]
+    [Authorize(Policy = Policies.HasNickname)]
+    [Authorize(Policy = Policies.HasHotmailDomain)]
     public async Task<ActionResult<Order>> GetNextOrder()
     {
         var order = await mediator.Send(new GetNextOrderCommand());

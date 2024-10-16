@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using PizzaManagementSystem.Models;
+using PizzaManagementSystem.Services.Interfaces;
 
 namespace PizzaManagementSystem.Services.Commands.GetMenu
 {

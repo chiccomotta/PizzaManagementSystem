@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using PizzaManagementSystem.Models.Interfaces;
 using PizzaManagementSystem.Models.Models;
 using System.Security.Claims;
 

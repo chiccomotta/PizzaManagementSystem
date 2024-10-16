@@ -1,6 +1,6 @@
 ﻿using PizzaManagementSystem.Models.Models;
 
-namespace PizzaManagementSystem.Services;
+namespace PizzaManagementSystem.Models.Interfaces;
 
 public interface IUserContext
 {

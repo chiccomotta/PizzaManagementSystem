@@ -10,6 +10,9 @@ using PizzaManagementSystem.Models.Validators;
 using PizzaManagementSystem.Services;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authorization;
+using PizzaManagementSystem.Models.Interfaces;
+using PizzaManagementSystem.Services.Interfaces;
 
 // ReSharper disable StringLiteralTypo
 
@@ -51,10 +54,11 @@ builder.Services.AddSwaggerGen(cfg =>
     });
 });
 
-// Business services
+// Business and authorization services
 builder.Services.AddSingleton<IOrderService, OrderPersistentQueueService>();
 builder.Services.AddScoped<GlobalExceptionMiddleware>();
 builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddScoped<IAuthorizationHandler, EmailAuthorizationHandler>();
 
 // FluentValidation
 builder.Services.AddValidatorsFromAssembly(typeof(OrderDtoValidator).Assembly).AddFluentValidationAutoValidation();
@@ -72,11 +76,16 @@ builder.Services
     .AddClaimsPrincipalFactory<ClaimsPrincipalFactory>()    // Utilizzo la mia classe Factory per aggiungere i claims che voglio
     .AddEntityFrameworkStores<DBContext>();
 
-// Autorizzazione basata su uno specifico claim (Nickname in questo caso).
-// La policy HasNickname deve trovare nel token dell'utente un claim "Nickname" il cui valore sia "Chicco" altrimenti forbidden.
 builder.Services
     .AddAuthorizationBuilder()
-    .AddPolicy(Policies.HasNickname, b => b.RequireClaim(ClaimNames.Nickname, "Chicco"));
+    
+    // Autorizzazione basata su uno specifico claim (Nickname in questo caso).
+    // La policy HasNickname deve trovare nel token dell'utente un claim "Nickname" il cui valore sia "Chicco" altrimenti forbidden.
+    .AddPolicy(Policies.HasNickname, b => b.RequireClaim(ClaimNames.Nickname, "Chicco"))
+    
+    // 
+    .AddPolicy(Policies.HasHotmailDomain, b => b.AddRequirements(new EmailRequirement("@hotmail.it")));
+        
 
 var app = builder.Build();
 
