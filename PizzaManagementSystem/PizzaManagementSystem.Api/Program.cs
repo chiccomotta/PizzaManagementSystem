@@ -88,6 +88,7 @@ builder.Services
 
 var app = builder.Build();
 
+// Middlewares
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.

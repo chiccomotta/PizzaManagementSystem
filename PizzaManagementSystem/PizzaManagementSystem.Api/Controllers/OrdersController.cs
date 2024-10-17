@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaManagementSystem.Models;
 using PizzaManagementSystem.Models.Authorization;
+using PizzaManagementSystem.Models.Infrastructure;
 using PizzaManagementSystem.Models.Interfaces;
 using PizzaManagementSystem.Models.Models;
 using PizzaManagementSystem.Services.Commands.CreateOrder;
@@ -103,6 +104,27 @@ public class OrdersController(IOrderService orderService, IMediator mediator, DB
         {
             return  Ok(await context.Areas.ToListAsync());
         }
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    [Route("/impiegati")]
+    public async Task<ActionResult> GetImpiegati([FromQuery] int pageNumber,[FromQuery] int pageSize)
+    {
+        // IQueryable interface
+        var query = context.Impiegatos.AsQueryable<Impiegato>();
+
+        // Pagination
+        var result = await PagedList<Impiegato>.ToPagedList(query, pageNumber, pageSize);
+        return Ok(result);
+
+        //List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        //var query = list.AsEnumerable();
+
+        //var result = PagedList<int>.ToPagedList(query, pageNumber, pageSize);
+
+        //// Pagination
+        //return Ok(result);
     }
 
     [HttpGet]
