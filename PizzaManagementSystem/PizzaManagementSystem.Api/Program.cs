@@ -102,6 +102,8 @@ app.UseHttpsRedirection();
 
 app.MapGroup("/auth").MapIdentityApi<User>();
 
+app.UseMiddleware<AuthorizationFailureMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();

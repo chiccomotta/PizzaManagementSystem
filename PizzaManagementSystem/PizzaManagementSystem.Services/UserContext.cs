@@ -15,7 +15,7 @@ public class UserContext(IHttpContextAccessor httpContextAccessor, ILogger<UserC
         var user = httpContextAccessor.HttpContext?.User;
         if (user?.Identity is null || !user.Identity.IsAuthenticated)
         {
-            throw new InvalidOperationException("Error user is null or not authenticated");
+            throw new NotAuthenticatedException("User is not authenticated");
         }
 
         var userId = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PizzaManagementSystem.Models.Interfaces;
 
@@ -17,6 +18,13 @@ public class EmailAuthorizationHandler(IUserContext userContext, ILogger<EmailAu
             return;
         }
 
-        context.Fail();
+        var reason = new AuthorizationFailureReason(this, "Email is not in the correct Domain");
+        context.Fail(reason);
+
+        // Salva il motivo del fallimento nel HttpContext.Items
+        if (context.Resource is HttpContext httpContext)
+        {
+            httpContext.Items["AuthorizationFailureReason"] = reason.Message;
+        }
     }
 }
